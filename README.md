@@ -10,7 +10,7 @@ Deploy your own Vite project with Vercel.
 
 [![Deploy with Cloudflare](https://deploy.workers.cloudflare.com/button)](https://github.com/cloudflare/templates/tree/main/vite-react-template)
 
-_Live Example: https://vite-react-example.vercel.app_
+_Live Example: https://react-vite-template.templates.workers.dev/_
 
 ### Deploying From Your Terminal
 
