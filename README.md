@@ -1,4 +1,8 @@
-# React + TypeScript + Vite
+# READTalk App
+
+digital eco-system project owned by SOEPARNO Tech divisions
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
