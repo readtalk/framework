@@ -14,8 +14,8 @@ _Live Example: https://vite-react-example.vercel.app_
 
 ### Deploying From Your Terminal
 
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
+You can deploy your new Vite project with a single command from your terminal using [Cloudflare CLI](https://developers.cloudflare.com/workers-ai/get-started/workers-wrangler/):
 
 ```shell
-$ vercel
+$ cloudflare
 ```
