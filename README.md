@@ -8,7 +8,7 @@ While this project uses React, Vite supports many popular JS frameworks. [See al
 
 Deploy your own Vite project with Vercel.
 
-[![Deploy with Cloudflare](https://vercel.com/button)](https://github.com/cloudflare/templates/tree/main/vite-react-template)
+[![Deploy with Cloudflare](https://deploy.workers.cloudflare.com/button)](https://github.com/cloudflare/templates/tree/main/vite-react-template)
 
 _Live Example: https://vite-react-example.vercel.app_
 
