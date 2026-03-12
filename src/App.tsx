@@ -1,11 +1,13 @@
-// App.tsx
 import { useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
+  const [count, setCount] = useState(0)
+
   const handleAgree = () => {
-    window.location.href = 'https://auth.readtalk.workers.dev/'
+    setCount((count) => count + 1)
+    console.log('Agreed! Count:', count + 1)    
   }
 
   return (
@@ -32,7 +34,7 @@ function App() {
           className="agree-button"
           onClick={handleAgree}
         >
-          Agree and continue
+          Agree and continue {count > 0 ? `(${count})` : ''}
         </button>
 
         <p className="read-the-docs">
