@@ -1,13 +1,10 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+// App.tsx
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function HomePage() {
-  const navigate = useNavigate()
-
+function App() {
   const handleAgree = () => {
-    // Pake navigate biar gak reload
-    navigate('/auth')
+    window.location.href = 'https://auth.readtalk.workers.dev/'
   }
 
   return (
@@ -42,18 +39,6 @@ function HomePage() {
         </p>
       </div>
     </>
-  )
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        {/* Nanti auth redirect balik ke / dengan parameter */}
-      </Routes>
-    </BrowserRouter>
   )
 }
 
