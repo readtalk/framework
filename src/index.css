@@ -67,22 +67,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-/* index.css */
-.page-transition-enter {
-  transform: translateX(100%);
-}
-
-.page-transition-enter-active {
-  transform: translateX(0);
-  transition: transform 0.3s ease-in-out;
-}
-
-.page-transition-exit {
-  transform: translateX(-100%);
-}
-
-.page-transition-exit-active {
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-}
