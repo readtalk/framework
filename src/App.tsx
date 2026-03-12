@@ -4,7 +4,7 @@ import './App.css'
 function App() {
   const handleAgree = () => {
     // Redirect ke OpenAuth
-    window.location.href = 'https://openauth.soeparnocorp.workers.dev/'
+    window.location.href = 'https://auth.readtalk.workers.dev/'
   }
 
   return (
