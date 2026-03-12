@@ -23,7 +23,11 @@
     opacity: 1;
     transform: scale(1);
   }
-  50% {
+  30% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -35,7 +39,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .logo {
-    animation: breathe 3s ease-in-out infinite;
+    animation: breathe 5s ease-in-out infinite;
   }
 }
 
