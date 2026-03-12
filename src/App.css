@@ -18,28 +18,21 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes breathe {
+@keyframes flip {
   0% {
-    opacity: 1;
-    transform: scale(1);
+    transform: rotateY(0deg);
   }
-  40% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  60% {
-    opacity: 0;
-    transform: scale(0.5);
+  50% {
+    transform: rotateY(180deg);
   }
   100% {
-    opacity: 1;
-    transform: scale(1);
+    transform: rotateY(360deg);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .logo {
-    animation: breathe 4s ease-in-out infinite;
+    animation: flip 2s ease-in-out infinite;
   }
 }
 
