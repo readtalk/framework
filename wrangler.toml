@@ -3,11 +3,6 @@ type = "typescript"
 compatibility_date = "2026-03-03"
 account_id = "32ab068c5f9cdd01d24d6201506c717d"
 
-[build]
-command = "npm run build"
-upload.format = "service-worker"
-upload.dir = "/dist"
-
 # Service Pages Functions:
 [[services]]
 binding = "EDGE_SERVICE"
@@ -23,4 +18,5 @@ database_id = "25896737-e0e8-4561-8cc6-f5841430d1c8"
 # KV
 [[kv_namespaces]]
 binding = "PAGES_KV"
+value = "app-readtalk"
 id = "72b81feecbfc4a56b06d55f812e04e9d"
