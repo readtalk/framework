@@ -11,7 +11,7 @@ upload.dir = "/dist"
 # Service Pages Functions:
 [[services]]
 binding = "EDGE_SERVICE"
-service = "durable-object"
+service = "edge"
 environment = "production"
 
 # D1 Database
