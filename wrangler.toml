@@ -1,0 +1,26 @@
+name = "readtalk"
+type = "typescript"
+compatibility_date = "2026-03-03"
+account_id = "#"
+
+[build]
+command = "npm run build"
+upload.format = "service-worker"
+upload.dir = "/dist"
+
+# Service Pages Functions:
+[[services]]
+binding = "EDGE"
+service = "durable-object"
+environment = "production"
+
+# D1 Database
+[[d1_databases]]
+binding = "PAGES_DB"
+database_name = "readtalk_db"
+database_id = "#"
+
+# KV
+[[kv_namespaces]]
+binding = "PAGES_KV"
+id = "#"
