@@ -7,7 +7,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: #0b141a;  /* Warna background WhatsApp */
+  background: #fffff;  /* Warna background WhatsApp */
   color: #e9edef;
   min-height: 100vh;
   display: flex;
@@ -74,7 +74,7 @@ body {
 }
 
 .terms a {
-  color: #00a884;  /* Warna hijau WhatsApp */
+  color: #ff0000;  /* Warna hijau WhatsApp */
   text-decoration: none;
 }
 
@@ -100,7 +100,7 @@ body {
 
 /* Agree button - mirip WhatsApp */
 .agree-button {
-  background: #00a884;  /* Hijau WhatsApp */
+  background: #ff0000;  /* Hijau WhatsApp */
   color: white;
   border: none;
   border-radius: 24px;
