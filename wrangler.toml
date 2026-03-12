@@ -17,10 +17,10 @@ environment = "production"
 # D1 Database
 [[d1_databases]]
 binding = "PAGES_DB"
-database_name = "readtalk_db"
-database_id = "#"
+database_name = "app-readtalk"
+database_id = "25896737-e0e8-4561-8cc6-f5841430d1c8"
 
 # KV
 [[kv_namespaces]]
 binding = "PAGES_KV"
-id = "#"
+id = "72b81feecbfc4a56b06d55f812e04e9d"
