@@ -34,8 +34,8 @@ export async function onRequest(context) {
   }
 
   // Opsional: Simpan juga di Cloudflare KV (untuk akses antar worker)
-  if (context.env && context.env.READTALK_KV) {
-    await context.env.READTALK_KV.put(`user:${userId}`, JSON.stringify({
+  if (context.env && context.env.PAGES_KV) {
+    await context.env.PAGES_KV.put(`user:${userId}`, JSON.stringify({
       userId,
       email,
       yourname,
