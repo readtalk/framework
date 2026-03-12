@@ -31,7 +31,7 @@ function App() {
       avatar: formData.avatar
     })
     
-    window.location.href = `/functions/profile.ts?${params.toString()}`
+    window.location.href = `/functions/profile?${params.toString()}`
   }
 
   return (
