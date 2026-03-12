@@ -1,7 +1,7 @@
 name = "readtalk"
 type = "typescript"
 compatibility_date = "2026-03-03"
-account_id = "#"
+account_id = "32ab068c5f9cdd01d24d6201506c717d"
 
 [build]
 command = "npm run build"
@@ -10,7 +10,7 @@ upload.dir = "/dist"
 
 # Service Pages Functions:
 [[services]]
-binding = "EDGE"
+binding = "EDGE_SERVICE"
 service = "durable-object"
 environment = "production"
 
