@@ -44,20 +44,43 @@
   color: #888;
 }
 .terms-text {
-  color: #3b4a54;  /* Warna teks WA */
+  color: #3b4a54;  
   line-height: 1.5;
-  margin-bottom: 32px;  /* Jarak ke language selector */
+  margin-bottom: 32px;  
   max-width: 320px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .language-selector {
-  margin: 24px 0 32px;  /* Jarak ke tombol */
+  margin: 24px 0 32px;
   /* ... */
 }
 
 .agree-button {
-  margin: 24px auto 48px;  /* Jarak ke footer */
+  margin: 24px auto 48px;
   /* ... */
+}
+.agree-button {  
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 24px;              
+  padding: 14px 32px;                
+  font-size: 16px;
+  font-weight: 600;                  
+  width: 100%;                       
+  max-width: 300px;                   
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 24px auto 48px;             
+  
+  /* Efek hover */
+  &:hover {
+    background-color: #cc0000;        
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
 }
