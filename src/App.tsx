@@ -1,14 +1,13 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function HomePage() {
+  const navigate = useNavigate()
 
   const handleAgree = () => {
-    setCount((count) => count + 1)
-    console.log('Agreed! Count:', count + 1)
-    // Fungsi navigasi / pages functions di sini
+    // Pake navigate biar gak reload
+    navigate('/auth')
   }
 
   return (
@@ -35,7 +34,7 @@ function App() {
           className="agree-button"
           onClick={handleAgree}
         >
-          Agree and continue {count > 0 ? `(${count})` : ''}
+          Agree and continue
         </button>
 
         <p className="read-the-docs">
@@ -43,6 +42,18 @@ function App() {
         </p>
       </div>
     </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        {/* Nanti auth redirect balik ke / dengan parameter */}
+      </Routes>
+    </BrowserRouter>
   )
 }
 
