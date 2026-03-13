@@ -1,13 +1,14 @@
-// /functions/settings.ts
+// /functions/profile.ts
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   
-  // Ambil parameter untuk diteruskan ke iframe
   const userId = url.searchParams.get('userId');
   const email = url.searchParams.get('email');
   const yourname = url.searchParams.get('yourname') || '';
   const avatar = url.searchParams.get('avatar') || '';
+  
+  const decodedEmail = email ? decodeURIComponent(email) : '';
 
   const html = `
 <!DOCTYPE html>
@@ -25,117 +26,325 @@ export async function onRequest(context) {
     
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f0f2f5;
-      height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      max-width: 500px;
+      width: 100%;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
 
     .header {
       background: #ff0000;
       color: white;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
     }
 
-    .back-button {
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 8px;
+    }
+
+    .menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .menu-button {
       background: none;
       border: none;
       color: white;
       font-size: 24px;
       cursor: pointer;
-      padding: 8px;
-      line-height: 1;
+      padding: 5px 10px;
+    }
+
+    .menu-dropdown {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      display: none;
+      min-width: 150px;
+    }
+
+    .menu-dropdown.show {
+      display: block;
+    }
+
+    .menu-item {
+      padding: 12px 20px;
+      color: #333;
       text-decoration: none;
+      display: block;
+      font-size: 14px;
     }
 
-    .back-button:hover {
-      background: rgba(255,255,255,0.2);
+    .menu-item:hover {
+      background: #f5f5f5;
+    }
+
+    .menu-item.logout {
+      color: #ff0000;
+      border-top: 1px solid #eee;
+    }
+
+    .content {
+      padding: 30px 25px;
+    }
+
+    .avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
+      background: #f0f2f5;
+      border: 3px solid #ff0000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      overflow: hidden;
     }
 
-    .header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      flex: 1;
-    }
-
-    .iframe-container {
-      margin-top: 60px;
-      height: calc(100vh - 60px);
-      width: 100%;
-    }
-
-    iframe {
+    .avatar img {
       width: 100%;
       height: 100%;
-      border: none;
+      object-fit: cover;
     }
 
-    .loading {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 20px;
+    .avatar .initials {
+      font-size: 36px;
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    .info-group {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .value {
+      font-size: 16px;
+      color: #1a1a1a;
+      background: #f8f9fa;
+      padding: 12px 15px;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      z-index: 1000;
+      border-left: 4px solid #ff0000;
+      word-break: break-all;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 25px 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #ff0000;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #cc0000;
+    }
+
+    .btn-secondary {
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .footer a {
+      color: #ff0000;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .tech-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .tech-badge span {
+      display: block;
+      margin-top: 5px;
+      font-size: 18px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <div class="header">
-    <a href="/profile?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}" class="back-button">←</a>
-    <h1>READTalk</h1>
-  </div>
+  <div class="card">
+    <div class="header">
+      <h1>READTalk</h1>
+      <p>Settings</p>
+      
+      <!-- MENU 3 TITIK -->
+      <div class="menu">
+        <button class="menu-button" onclick="toggleMenu()">⋮</button>
+        <div class="menu-dropdown" id="menuDropdown">
+          <!-- PERINTAH KE VITE 2 (settings worker) -->
+          <a href="https://settings.readtalk.workers.dev?userId=${userId}&email=${encodeURIComponent(decodedEmail)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}" class="menu-item">⚙️ Settings</a>
+          <a href="/logout" class="menu-item logout">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content">
+      <!-- AVATAR SECTION -->
+      <div class="avatar-section">
+        <div class="avatar" id="avatarContainer">
+          ${avatar ? 
+            `<img src="${avatar}" alt="avatar" onerror="this.style.display='none';document.getElementById('avatarInitials').style.display='flex';">` : 
+            `<div class="initials" id="avatarInitials">${yourname ? yourname.charAt(0).toUpperCase() : userId?.charAt(0).toUpperCase() || '?'}</div>`
+          }
+        </div>
+        
+        ${avatar ? 
+          `<div style="font-size: 12px; color: #888;">📷 Avatar Link</div>` : 
+          ''
+        }
+      </div>
 
-  <!-- IFRAME KE WORKERS.DEV -->
-  <div class="iframe-container">
-    <iframe 
-      src="https://settings.readtalk.workers.dev/profile?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}"
-      allow="camera; microphone"
-      sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-      id="settingsFrame">
-    </iframe>
-  </div>
+      <!-- INFO SECTIONS -->
+      <div class="info-group">
+        <div class="label">Your Name</div>
+        <div class="value">${yourname || '-'}</div>
+      </div>
 
-  <div class="loading" id="loading" style="display: none;">
-    Loading...
+      <div class="info-group">
+        <div class="label">User ID</div>
+        <div class="value">${userId || ''}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="label">Email</div>
+        <div class="value">${decodedEmail}</div>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <!-- TECH STACK INFO -->
+      <div class="tech-badge">
+        ⚡ Vite + React + Hono + Cloudflare
+        <span>⚡ Vite 2 (settings.readtalk.workers.dev)</span>
+      </div>
+      
+      <!-- BUTTON KE SETTINGS -->
+      <div class="button-group" style="margin-top: 20px;">
+        <a href="https://settings.readtalk.workers.dev?userId=${userId}&email=${encodeURIComponent(decodedEmail)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}" class="btn btn-primary">
+          ✏️ Edit Profil
+        </a>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <a href="/">← Beranda</a>
+    </div>
   </div>
 
   <script>
-    // Show/hide loading
-    const iframe = document.getElementById('settingsFrame');
-    const loading = document.getElementById('loading');
-    
-    iframe.onload = () => {
-      loading.style.display = 'none';
-    };
-    
-    iframe.onloadstart = () => {
-      loading.style.display = 'block';
-    };
+    // Toggle menu dropdown
+    window.toggleMenu = function() {
+      const menu = document.getElementById('menuDropdown');
+      menu.classList.toggle('show');
+    }
 
-    // Terima pesan dari iframe
-    window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://settings.readtalk.workers.dev') return;
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('menuDropdown');
+      const button = document.querySelector('.menu-button');
       
-      if (event.data.type === 'PROFILE_UPDATED') {
-        // Redirect ke profile dengan data baru
-        const { yourname, avatar } = event.data;
-        window.location.href = \`/profile?userId=${userId}&email=${encodeURIComponent(email)}\${yourname ? '&yourname=' + encodeURIComponent(yourname) : ''}\${avatar ? '&avatar=' + encodeURIComponent(avatar) : ''}\`;
+      if (!button.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.remove('show');
       }
     });
+
+    // Handle avatar load error
+    const avatarImg = document.querySelector('.avatar img');
+    if (avatarImg) {
+      avatarImg.onerror = function() {
+        this.style.display = 'none';
+        const initials = document.createElement('div');
+        initials.className = 'initials';
+        initials.id = 'avatarInitials';
+        initials.textContent = '${yourname ? yourname.charAt(0).toUpperCase() : userId?.charAt(0).toUpperCase() || '?'}';
+        document.getElementById('avatarContainer').appendChild(initials);
+      };
+    }
   </script>
 </body>
 </html>
