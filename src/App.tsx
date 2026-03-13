@@ -1,3 +1,4 @@
+// src/App.tsx (VITE 1 - readtalk.pages.dev)
 import { useEffect, useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -5,51 +6,65 @@ import './App.css'
 function App() {
   const [showIframe, setShowIframe] = useState(false)
   const [iframeSrc, setIframeSrc] = useState('')
+  const [isLoading, setIsLoading] = useState(true)  // ← TAMBAH LOADING
 
   useEffect(() => {
-    // CEK LOCALSTORAGE DULU (UNTUK TAB BARU)
+    // CEK DATA USER
     const localUserId = localStorage.getItem('userId')
     const localEmail = localStorage.getItem('email')
     
-    // CEK URL (UNTUK PERTAMA KALI)
     const params = new URLSearchParams(window.location.search)
     const urlUserId = params.get('userId')
     const urlEmail = params.get('email')
     
-    // PRIORITAS: LOCALSTORAGE > URL
     const userId = localUserId || urlUserId
     const email = localEmail || urlEmail
     
     if (userId && email) {
-      // Update localStorage dengan data dari URL (jika ada)
       if (urlUserId) localStorage.setItem('userId', urlUserId)
       if (urlEmail) localStorage.setItem('email', urlEmail)
       
       setIframeSrc(`https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
       setShowIframe(true)
     }
+    
+    // LOADING SELESAI
+    setIsLoading(false)
   }, [])
 
   const handleAgree = () => {
     window.location.href = 'https://auth.readtalk.workers.dev/'
   }
 
-  // LISTENER LOGOUT DARI VITE 2
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== 'https://settings.readtalk.workers.dev') return
-      
       if (event.data.type === 'LOGOUT') {
         localStorage.removeItem('userId')
         localStorage.removeItem('email')
         window.location.reload()
       }
     }
-    
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
+  // LOADING SCREEN (biar tidak keliatan welcome)
+  if (isLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#ffffff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div className="spinner"></div>
+      </div>
+    )
+  }
+
+  // KALAU ADA IFRAME, TAMPILKAN LANGSUNG (TANPA WELCOME)
   if (showIframe) {
     return (
       <iframe
@@ -60,15 +75,14 @@ function App() {
           left: 0,
           width: '100%',
           height: '100%',
-          border: 'none',
-          zIndex: 1000,
-          background: 'white'
+          border: 'none'
         }}
         title="READTalk Settings"
       />
     )
   }
 
+  // WELCOME SCREEN (hanya untuk user yang belum login)
   return (
     <div className="whatsapp-container">
       <div className="content">
