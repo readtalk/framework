@@ -1,76 +1,80 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import viteLogo from '/vite.svg'
-import { languages } from './language'
 import './App.css'
 
 function App() {
-  const [showLanguagePopup, setShowLanguagePopup] = useState(false)
-  const [showAuthPopup, setShowAuthPopup] = useState(false)
+  const [showIframe, setShowIframe] = useState(false)
+  const [iframeSrc, setIframeSrc] = useState('')
 
+  // ===== CEK PARAMETER DARI AUTH =====
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const userId = params.get('userId')
+    const email = params.get('email')
+    
+    if (userId && email) {
+      // Simpan di localStorage (opsional)
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('email', email)
+      
+      // Bikin URL untuk iframe
+      const src = `https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`
+      setIframeSrc(src)
+      setShowIframe(true)
+    }
+  }, [])
+
+  const handleAgree = () => {
+    window.location.href = 'https://auth.readtalk.workers.dev/'
+  }
+
+  // KALAU ADA PARAMETER, TAMPILKAN IFRAME FULLSCREEN
+  if (showIframe) {
+    return (
+      <iframe
+        src={iframeSrc}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          border: 'none'
+        }}
+        title="READTalk Settings"
+      />
+    )
+  }
+
+  // WELCOME SCREEN (default)
   return (
-    <>
-      {/* POPUP BAHASA */}
-      {showLanguagePopup && (
-        <div className="popup-overlay" onClick={() => setShowLanguagePopup(false)}>
-          <div className="popup-language" onClick={(e) => e.stopPropagation()}>
-            <h2>App language</h2>
-            <div className="language-list">
-              {languages.map((lang) => (
-                <div key={lang.code} className="language-item">
-                  {lang.nativeName}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* POPUP AUTH (IFRAME) */}
-      {showAuthPopup && (
-        <div className="popup-overlay" onClick={() => setShowAuthPopup(false)}>
-          <div className="popup-auth" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="close-button"
-              onClick={() => setShowAuthPopup(false)}
-            >
-              ←
-            </button>
-            <iframe
-              src="https://auth.app-readtalk.workers.dev"
-              className="auth-iframe"
-              title="Authentication"
-            />
-          </div>
-        </div>
-      )}
-
-      {/* MAIN CONTENT */}
-      <div className="container">
+    <div className="whatsapp-container">
+      <div className="content">
         <img src={viteLogo} className="logo" alt="Vite logo" />
         
-        <h1>Welcome to READTalk</h1>
+        <h1 className="title">Welcome to READTalk</h1>
         
-        <p className="terms-text">
-          Read our <a href="#">Privacy Policies</a>. Tap "Agree and continue" to accept our <a href="#">Terms of Service</a>.
+        <p className="terms">
+          Read our <a href="https://readtalk.pages.dev/">Privacy Policies</a>. Tap "Agree and continue" 
+          to accept our <a href="https://readtalk.pages.dev/">Terms of Service</a>.
         </p>
 
-        <div 
-          className="language-selector"
-          onClick={() => setShowLanguagePopup(true)}
-        >
-          English ▼
+        <div className="language-selector">
+          <span>English ▼</span>
         </div>
 
         <button 
           className="agree-button"
-          onClick={() => setShowAuthPopup(true)}
+          onClick={handleAgree}
         >
           Agree and continue
         </button>
-
-        <p className="footer">© 2026 SOEPARNO ENTERPRISE Corp.</p>
       </div>
-    </>
+
+      <div className="footer">
+        <p>© 2026 SOEPARNO ENTERPRISE Corp.</p>
+      </div>
+    </div>
   )
 }
 
