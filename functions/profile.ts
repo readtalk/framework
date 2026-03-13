@@ -96,13 +96,13 @@ export async function onRequest(context) {
   <!-- HEADER -->
   <div class="header">
     <a href="/profile?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}" class="back-button">←</a>
-    <h1>Edit Profile</h1>
+    <h1>settings</h1>
   </div>
 
   <!-- IFRAME KE WORKERS.DEV -->
   <div class="iframe-container">
     <iframe 
-      src="https://edge.readtalk.workers.dev/settings?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}"
+      src="https://settings.readtalk.workers.dev/profile?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}"
       allow="camera; microphone"
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
       id="settingsFrame">
@@ -128,7 +128,7 @@ export async function onRequest(context) {
 
     // Terima pesan dari iframe
     window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://edge.readtalk.workers.dev') return;
+      if (event.origin !== 'https://settings.readtalk.workers.dev') return;
       
       if (event.data.type === 'PROFILE_UPDATED') {
         // Redirect ke profile dengan data baru
