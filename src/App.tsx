@@ -1,52 +1,75 @@
-import { useState, useEffect } from 'react'
-import viteLogo from '/vite.svg'
-import './App.css'
-import PopupProfile from './popup'  // ✅ IMPORT POPUP
+import { useState } from 'react';
+import AuthPopup from './AuthPopup';
+import { useLocale } from './contexts/LocaleContext';
+import { languages } from './locales';
+import './App.css';
 
 function App() {
-  const [showPopup, setShowPopup] = useState(false)
-  const [userData, setUserData] = useState(null)
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const userId = params.get('userId')
-    const email = params.get('email')
-    
-    if (userId && email) {
-      setUserData({ userId, email })
-      setShowPopup(true)  // ✅ MUNCULKAN POPUP
-    }
-  }, [])
-
-  const handleAgree = () => {
-    window.location.href = 'https://auth.readtalk.workers.dev/'
-  }
+  const [showLanguagePopup, setShowLanguagePopup] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const { t, locale, setLocale } = useLocale();
 
   return (
     <>
-      {/* WELCOME SCREEN (background) */}
-      <div className="whatsapp-container">
-        <div className="content">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-          <h1 className="title">Welcome to READTalk</h1>
-          <p className="terms">...</p>
-          <button className="agree-button" onClick={handleAgree}>
-            Agree and continue
-          </button>
+      {/* Language Popup */}
+      {showLanguagePopup && (
+        <div className="popup-overlay" onClick={() => setShowLanguagePopup(false)}>
+          <div className="popup-language" onClick={(e) => e.stopPropagation()}>
+            <h2>{t('language')}</h2>
+            <div className="language-list">
+              {languages.map((lang) => (
+                <div
+                  key={lang.code}
+                  className={`language-item ${locale === lang.code ? 'active' : ''}`}
+                  onClick={() => {
+                    setLocale(lang.code as any);
+                    setShowLanguagePopup(false);
+                  }}
+                >
+                  {lang.nativeName}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="footer">...</div>
-      </div>
-
-      {/* POPUP (muncul di atas) */}
-      {showPopup && userData && (
-        <PopupProfile 
-          userId={userData.userId} 
-          email={userData.email} 
-          onClose={() => setShowPopup(false)}
-        />
       )}
+
+      {/* Auth Popup (1 popup untuk semua) */}
+      <AuthPopup
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        onSuccess={() => {
+          // Redirect ke dashboard setelah login sukses
+          window.location.href = '/dashboard';
+        }}
+      />
+
+      {/* Main Content */}
+      <div className="container">
+        <h1>{t('welcome')}</h1>
+
+        <p className="terms-text">
+          {t('terms', { privacy: t('privacy'), terms: t('terms_of_service') })}
+        </p>
+
+        <div
+          className="language-selector"
+          onClick={() => setShowLanguagePopup(true)}
+        >
+          {languages.find(l => l.code === locale)?.nativeName} ▼
+        </div>
+
+        <button
+          className="agree-button"
+          onClick={() => setShowAuth(true)}
+        >
+          {t('agree')}
+        </button>
+
+        <p className="footer">{t('footer')}</p>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
