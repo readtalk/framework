@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import AuthPopup from './AuthPopup';
+import AuthPopup from './auth';
 import { useLocale } from './contexts/LocaleContext';
-import { languages } from './locales';
+import { languages } from './language';
 import './App.css';
 
 function App() {
