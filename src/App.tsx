@@ -1,31 +1,22 @@
-import { useState } from 'react';
-import AuthPopup from './auth';
-import { useLocale } from './contexts/LocaleContext';
-import { languages } from './language';
-import './App.css';
+import { useState } from 'react'
+import viteLogo from '/vite.svg'
+import { languages } from './language'
+import './App.css'
 
 function App() {
-  const [showLanguagePopup, setShowLanguagePopup] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
-  const { t, locale, setLocale } = useLocale();
+  const [showLanguagePopup, setShowLanguagePopup] = useState(false)
+  const [showAuthPopup, setShowAuthPopup] = useState(false)
 
   return (
     <>
-      {/* Language Popup */}
+      {/* POPUP BAHASA */}
       {showLanguagePopup && (
         <div className="popup-overlay" onClick={() => setShowLanguagePopup(false)}>
           <div className="popup-language" onClick={(e) => e.stopPropagation()}>
-            <h2>{t('language')}</h2>
+            <h2>App language</h2>
             <div className="language-list">
               {languages.map((lang) => (
-                <div
-                  key={lang.code}
-                  className={`language-item ${locale === lang.code ? 'active' : ''}`}
-                  onClick={() => {
-                    setLocale(lang.code as any);
-                    setShowLanguagePopup(false);
-                  }}
-                >
+                <div key={lang.code} className="language-item">
                   {lang.nativeName}
                 </div>
               ))}
@@ -34,42 +25,53 @@ function App() {
         </div>
       )}
 
-      {/* Auth Popup (1 popup untuk semua) */}
-      <AuthPopup
-        isOpen={showAuth}
-        onClose={() => setShowAuth(false)}
-        onSuccess={() => {
-          // Redirect ke dashboard setelah login sukses
-          window.location.href = '/dashboard';
-        }}
-      />
+      {/* POPUP AUTH (IFRAME) */}
+      {showAuthPopup && (
+        <div className="popup-overlay" onClick={() => setShowAuthPopup(false)}>
+          <div className="popup-auth" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="close-button"
+              onClick={() => setShowAuthPopup(false)}
+            >
+              ←
+            </button>
+            <iframe
+              src="https://auth.app-readtalk.workers.dev"
+              className="auth-iframe"
+              title="Authentication"
+            />
+          </div>
+        </div>
+      )}
 
-      {/* Main Content */}
+      {/* MAIN CONTENT */}
       <div className="container">
-        <h1>{t('welcome')}</h1>
-
+        <img src={viteLogo} className="logo" alt="Vite logo" />
+        
+        <h1>Welcome to READTalk</h1>
+        
         <p className="terms-text">
-          {t('terms', { privacy: t('privacy'), terms: t('terms_of_service') })}
+          Read our <a href="#">Privacy Policies</a>. Tap "Agree and continue" to accept our <a href="#">Terms of Service</a>.
         </p>
 
-        <div
+        <div 
           className="language-selector"
           onClick={() => setShowLanguagePopup(true)}
         >
-          {languages.find(l => l.code === locale)?.nativeName} ▼
+          English ▼
         </div>
 
-        <button
+        <button 
           className="agree-button"
-          onClick={() => setShowAuth(true)}
+          onClick={() => setShowAuthPopup(true)}
         >
-          {t('agree')}
+          Agree and continue
         </button>
 
-        <p className="footer">{t('footer')}</p>
+        <p className="footer">© 2026 SOEPARNO ENTERPRISE Corp.</p>
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
