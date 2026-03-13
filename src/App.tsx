@@ -13,14 +13,9 @@ function App() {
     const email = params.get('email')
     
     if (userId && email) {
-      // Simpan di localStorage (untuk下次)
       localStorage.setItem('userId', userId)
       localStorage.setItem('email', email)
       
-      // ✅ JANGAN BERSIHKAN URL!
-      // Biarkan parameter tetap ada di URL
-      
-      // Set iframe
       setIframeSrc(`https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
       setShowIframe(true)
     }
@@ -30,19 +25,14 @@ function App() {
     window.location.href = 'https://auth.readtalk.workers.dev/'
   }
 
-  // ===== LISTENER LOGOUT DARI IFRAME =====
+  // ===== LISTENER LOGOUT DENGAN TYPE =====
   useEffect(() => {
-    const handleMessage = (event) => {
+    const handleMessage = (event: MessageEvent) => {  // ✅ TAMBAHKAN TYPE!
       if (event.origin !== 'https://settings.readtalk.workers.dev') return
       
       if (event.data.type === 'LOGOUT') {
-        // Hapus localStorage
         localStorage.removeItem('userId')
         localStorage.removeItem('email')
-        
-        // ✅ RELOAD DENGAN PARAMETER MASIH ADA
-        // Tapi karena localStorage udah kosong, 
-        // useEffect akan tetap detek parameter, tapi kita harus cegah login ulang
         window.location.reload()
       }
     }
@@ -51,42 +41,25 @@ function App() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // KALAU ADA IFRAME, TAMPILKAN (WELCOME SCREEN TETAP ADA DI BELAKANG)
   if (showIframe) {
     return (
-      <>
-        {/* WELCOME SCREEN (background) - bisa dikasih opacity atau hidden */}
-        <div style={{ display: 'none' }}>
-          <div className="whatsapp-container">
-            <div className="content">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-              <h1 className="title">Welcome to READTalk</h1>
-              <p className="terms">...</p>
-              <button className="agree-button">Agree and continue</button>
-            </div>
-          </div>
-        </div>
-        
-        {/* IFRAME FULLSCREEN */}
-        <iframe
-          src={iframeSrc}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            border: 'none',
-            zIndex: 1000,
-            background: 'white'
-          }}
-          title="READTalk Settings"
-        />
-      </>
+      <iframe
+        src={iframeSrc}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          zIndex: 1000,
+          background: 'white'
+        }}
+        title="READTalk Settings"
+      />
     )
   }
 
-  // WELCOME SCREEN (default)
   return (
     <div className="whatsapp-container">
       <div className="content">
