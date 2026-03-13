@@ -15,7 +15,7 @@ export async function onRequest(context) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>READTalk Settings</title>
+  <title>READTalk</title>
   <style>
     * {
       margin: 0;
@@ -96,7 +96,7 @@ export async function onRequest(context) {
   <!-- HEADER -->
   <div class="header">
     <a href="/profile?userId=${userId}&email=${encodeURIComponent(email)}${yourname ? `&yourname=${encodeURIComponent(yourname)}` : ''}${avatar ? `&avatar=${encodeURIComponent(avatar)}` : ''}" class="back-button">←</a>
-    <h1>settings</h1>
+    <h1>READTalk</h1>
   </div>
 
   <!-- IFRAME KE WORKERS.DEV -->
