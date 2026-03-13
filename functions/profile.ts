@@ -17,7 +17,7 @@ export async function onRequest(context) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>READTalk Profile</title>
+  <title>READTalk</title>
   <style>
     * {
       margin: 0;
@@ -169,7 +169,7 @@ export async function onRequest(context) {
 <body>
   <!-- HEADER PENGENDALI UNTUK USER SAAT INI -->
   <div class="header">
-    <a href="/" class="back-button">←</a>
+    <a href="" class="back-button"></a>
     <h1>READTalk</h1>
     <span class="header-info">${currentName || decodedEmail.split('@')[0]}</span>
     <span class="badge">ID: ${currentUserId.substring(0, 6)}...</span>
