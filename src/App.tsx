@@ -1,40 +1,76 @@
+import { useState } from 'react'
 import viteLogo from '/vite.svg'
+import { languages } from './language'
 import './App.css'
 
 function App() {
-  const handleAgree = () => {
-    // Redirect ke OpenAuth
-    window.location.href = 'https://auth.readtalk.workers.dev/'
-  }
+  const [showLanguagePopup, setShowLanguagePopup] = useState(false)
+  const [showAuthPopup, setShowAuthPopup] = useState(false)
 
   return (
-    <div className="whatsapp-container">
-      <div className="content">
+    <>
+      {/* POPUP BAHASA */}
+      {showLanguagePopup && (
+        <div className="popup-overlay" onClick={() => setShowLanguagePopup(false)}>
+          <div className="popup-language" onClick={(e) => e.stopPropagation()}>
+            <h2>App language</h2>
+            <div className="language-list">
+              {languages.map((lang) => (
+                <div key={lang.code} className="language-item">
+                  {lang.nativeName}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POPUP AUTH (IFRAME) */}
+      {showAuthPopup && (
+        <div className="popup-overlay" onClick={() => setShowAuthPopup(false)}>
+          <div className="popup-auth" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="close-button"
+              onClick={() => setShowAuthPopup(false)}
+            >
+              ←
+            </button>
+            <iframe
+              src="https://auth.app-readtalk.workers.dev"
+              className="auth-iframe"
+              title="Authentication"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* MAIN CONTENT */}
+      <div className="container">
         <img src={viteLogo} className="logo" alt="Vite logo" />
         
-        <h1 className="title">Welcome to READTalk</h1>
+        <h1>Welcome to READTalk</h1>
         
-        <p className="terms">
-          Read our <a href="https://readtalk.pages.dev/">Privacy Policies</a>. Tap "Agree and continue" 
-          to accept our <a href="https://readtalk.pages.dev/">Terms of Service</a>.
+        <p className="terms-text">
+          Read our <a href="#">Privacy Policies</a>. Tap "Agree and continue" to accept our <a href="#">Terms of Service</a>.
         </p>
 
-        <div className="language-selector">
-          <span>English ▼</span>
+        <div 
+          className="language-selector"
+          onClick={() => setShowLanguagePopup(true)}
+        >
+          English ▼
         </div>
 
         <button 
           className="agree-button"
-          onClick={handleAgree}
+          onClick={() => setShowAuthPopup(true)}
         >
           Agree and continue
         </button>
-      </div>
 
-      <div className="footer">
-        <p>© 2026 SOEPARNO ENTERPRISE Corp.</p>
+        <p className="footer">© 2026 SOEPARNO ENTERPRISE Corp.</p>
       </div>
-    </div>
+    </>
   )
 }
 
