@@ -36,7 +36,7 @@ function App() {
               ←
             </button>
             <iframe
-              src="https://auth.app-readtalk.workers.dev"
+              src="https://auth.readtalk.workers.dev"
               className="auth-iframe"
               title="Authentication"
             />
