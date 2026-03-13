@@ -1,33 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Profile from './profile'
+import { renderProfile } from './profile'  // ✅ IMPORT dari .ts
 
 function App() {
-  const [showProfile, setShowProfile] = useState(false)
-  const [userData, setUserData] = useState(null)
+  // CEK PARAMETER DI URL
+  const params = new URLSearchParams(window.location.search)
+  const userId = params.get('userId')
+  const email = params.get('email')
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const userId = params.get('userId')
-    const email = params.get('email')
-    
-    if (userId && email) {
-      localStorage.setItem('userId', userId)
-      localStorage.setItem('email', email)
-      setUserData({ userId, email })
-      setShowProfile(true)
-    }
-  }, [])
-
-  const handleAgree = () => {
-    window.location.href = 'https://auth.readtalk.workers.dev/'
+  // KALAU ADA PARAMETER, TAMPILKAN PROFILE
+  if (userId && email) {
+    return renderProfile({ userId, email })  // ✅ PANGGIL FUNCTION
   }
 
-  if (showProfile && userData) {
-    return <Profile userData={userData} />
-  }
-
+  // KALAU TIDAK, TAMPILKAN WELCOME
   return (
     <div className="whatsapp-container">
       <div className="content">
@@ -40,7 +27,7 @@ function App() {
         <div className="language-selector">
           <span>English ▼</span>
         </div>
-        <button className="agree-button" onClick={handleAgree}>
+        <button className="agree-button" onClick={() => window.location.href = 'https://auth.readtalk.workers.dev/'}>
           Agree and continue
         </button>
       </div>
