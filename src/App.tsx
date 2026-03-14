@@ -1,4 +1,4 @@
-// src/App.tsx (VITE 1 - readtalk.pages.dev)
+// src/App.tsx - readtalk.pages.dev
 import { useEffect, useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -6,7 +6,8 @@ import './App.css'
 function App() {
   const [showIframe, setShowIframe] = useState(false)
   const [iframeSrc, setIframeSrc] = useState('')
-  const [isLoading, setIsLoading] = useState(true)  // ← TAMBAH LOADING
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('Menyiapkan READTalk...')
 
   useEffect(() => {
     // CEK DATA USER
@@ -24,12 +25,18 @@ function App() {
       if (urlUserId) localStorage.setItem('userId', urlUserId)
       if (urlEmail) localStorage.setItem('email', urlEmail)
       
+      setLoadingMessage('Mengalihkan ke READTalk...')
       setIframeSrc(`https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
-      setShowIframe(true)
+      
+      // Beri sedikit delay agar loading terlihat
+      setTimeout(() => {
+        setShowIframe(true)
+        setIsLoading(false)
+      }, 800)
+    } else {
+      // TIDAK ADA USER, LANGSUNG KE WELCOME
+      setIsLoading(false)
     }
-    
-    // LOADING SELESAI
-    setIsLoading(false)
   }, [])
 
   const handleAgree = () => {
@@ -49,22 +56,21 @@ function App() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // LOADING SCREEN (biar tidak keliatan welcome)
+  // LOADING SCREEN DENGAN ANIMASI
   if (isLoading) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: '#ffffff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div className="spinner"></div>
+      <div className="loading-container">
+        <div className="loading-content">
+          <img src={viteLogo} className="loading-logo" alt="Vite logo" />
+          <h1 className="loading-title">READTalk</h1>
+          <div className="spinner"></div>
+          <p className="loading-message">{loadingMessage}</p>
+        </div>
       </div>
     )
   }
 
-  // KALAU ADA IFRAME, TAMPILKAN LANGSUNG (TANPA WELCOME)
+  // KALAU ADA IFRAME, TAMPILKAN LANGSUNG
   if (showIframe) {
     return (
       <iframe
@@ -82,7 +88,7 @@ function App() {
     )
   }
 
-  // WELCOME SCREEN (hanya untuk user yang belum login)
+  // WELCOME SCREEN
   return (
     <div className="whatsapp-container">
       <div className="content">
