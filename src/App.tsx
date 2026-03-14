@@ -7,10 +7,8 @@ function App() {
   const [showIframe, setShowIframe] = useState(false)
   const [iframeSrc, setIframeSrc] = useState('')
   const [isLoading, setIsLoading] = useState(true)
-  const [loadingMessage, setLoadingMessage] = useState('Menyiapkan READTalk...')
 
   useEffect(() => {
-    // CEK DATA USER
     const localUserId = localStorage.getItem('userId')
     const localEmail = localStorage.getItem('email')
     
@@ -25,18 +23,11 @@ function App() {
       if (urlUserId) localStorage.setItem('userId', urlUserId)
       if (urlEmail) localStorage.setItem('email', urlEmail)
       
-      setLoadingMessage('Mengalihkan ke READTalk...')
       setIframeSrc(`https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
-      
-      // Beri sedikit delay agar loading terlihat
-      setTimeout(() => {
-        setShowIframe(true)
-        setIsLoading(false)
-      }, 800)
-    } else {
-      // TIDAK ADA USER, LANGSUNG KE WELCOME
-      setIsLoading(false)
+      setShowIframe(true)
     }
+    
+    setIsLoading(false)
   }, [])
 
   const handleAgree = () => {
@@ -56,21 +47,24 @@ function App() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // LOADING SCREEN DENGAN ANIMASI
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-content">
-          <img src={viteLogo} className="loading-logo" alt="Vite logo" />
-          <h1 className="loading-title">READTalk</h1>
-          <div className="spinner"></div>
-          <p className="loading-message">{loadingMessage}</p>
-        </div>
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#ffffff'
+      }}>
+        <div className="spinner"></div>
       </div>
     )
   }
 
-  // KALAU ADA IFRAME, TAMPILKAN LANGSUNG
   if (showIframe) {
     return (
       <iframe
@@ -88,9 +82,8 @@ function App() {
     )
   }
 
-  // WELCOME SCREEN
   return (
-    <div className="whatsapp-container">
+    <div className="container">
       <div className="content">
         <img src={viteLogo} className="logo" alt="Vite logo" />
         <h1 className="title">Welcome to READTalk</h1>
