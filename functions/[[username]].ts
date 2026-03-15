@@ -5,7 +5,7 @@ export const onRequest: PagesFunction = async (context) => {
   const username = context.params?.username as string | undefined;
 
   if (!username) {
-    return new Response("Username tidak ditemukan", { status: 404 });
+    return new Response("Username Not Found", { status: 404 });
   }
 
   // Bersihkan @ kalau ada
@@ -13,15 +13,15 @@ export const onRequest: PagesFunction = async (context) => {
 
   // Contoh: fetch data user dari KV, D1, atau DO
   // Misal pakai KV (ganti dengan KV binding kamu)
-  const userData = await context.env.USER_KV.get(cleanUsername);
+  const userData = await context.env.PAGES_KV.get(cleanUsername);
 
   if (!userData) {
-    return new Response(`User @${cleanUsername} tidak ditemukan`, { status: 404 });
+    return new Response(`User @${cleanUsername} not found`, { status: 404 });
   }
 
   const data = JSON.parse(userData);
 
-  // Render halaman Linktree-style (HTML sederhana atau React SSR kalau mau)
+  // Render Linktree-style (HTML React SSR
   const html = `
     <!DOCTYPE html>
     <html lang="id">
