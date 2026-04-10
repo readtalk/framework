@@ -6,7 +6,7 @@ account_id = "32ab068c5f9cdd01d24d6201506c717d"
 # Service Pages Functions:
 [[services]]
 binding = "EDGE_SERVICE"
-service = "edge"
+service = "state"
 environment = "production"
 
 # D1 Database
