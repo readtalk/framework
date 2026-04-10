@@ -23,7 +23,7 @@ function App() {
       if (urlUserId) localStorage.setItem('userId', urlUserId)
       if (urlEmail) localStorage.setItem('email', urlEmail)
       
-      setIframeSrc(`https://edge.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
+      setIframeSrc(`https://settings.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
       setShowIframe(true)
     }
     
@@ -36,7 +36,7 @@ function App() {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://edge.readtalk.workers.dev') return
+      if (event.origin !== 'https://settings.readtalk.workers.dev') return
       if (event.data.type === 'LOGOUT') {
         localStorage.removeItem('userId')
         localStorage.removeItem('email')
