@@ -193,7 +193,7 @@ export async function onRequest(context) {
   <!-- IFRAME KE VITE 2 (EKSEKUTOR) -->
   <div class="iframe-container">
     <iframe 
-      src="https://settings.readtalk.workers.dev/profile?userId=${currentUserId}&email=${encodeURIComponent(decodedEmail)}${currentName ? `&yourname=${encodeURIComponent(currentName)}` : ''}${currentAvatar ? `&avatar=${encodeURIComponent(currentAvatar)}` : ''}"
+      src="https://edge.readtalk.workers.dev/profile?userId=${currentUserId}&email=${encodeURIComponent(decodedEmail)}${currentName ? `&yourname=${encodeURIComponent(currentName)}` : ''}${currentAvatar ? `&avatar=${encodeURIComponent(currentAvatar)}` : ''}"
       allow="camera; microphone"
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
       id="vite2Frame">
@@ -263,7 +263,7 @@ export async function onRequest(context) {
 
     // Terima pesan dari Vite 2
     window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://settings.readtalk.workers.dev') return;
+      if (event.origin !== 'https://edge.readtalk.workers.dev') return;
       
       console.log('📨 Pesan dari Vite 2:', event.data);
       
