@@ -23,7 +23,7 @@ function App() {
       if (urlUserId) localStorage.setItem('userId', urlUserId)
       if (urlEmail) localStorage.setItem('email', urlEmail)
       
-      setIframeSrc(`https://state.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
+      setIframeSrc(`https://edge.readtalk.workers.dev/?userId=${userId}&email=${encodeURIComponent(email)}`)
       setShowIframe(true)
     }
     
