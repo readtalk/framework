@@ -80,7 +80,7 @@ button:focus-visible {
 
 /* Jarak tombol ke footer */
 .agree-button {
-  margin: 28px auto 40px;  /* bottom lebih besar */
+  margin: 24px auto 40px;  /* bottom lebih besar */
   /* ... */
 }
 
