@@ -1,6 +1,6 @@
 # READTalk App
 
-digital eco-system project owned by SOEPARNO Tech part of SOEPARNO ENTERPRISE Corp.
+digital eco-system project by SOEPARNO Tech part of SOEPARNO ENTERPRISE Corp.
 
 ## React + TypeScript + Vite
 
